@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CampeaoService {
 
-//    private final CampeaoClient campeaoClient;
+    private final CampeaoClient campeaoClient;
 
-//    public Campeao findById(Long id) {
-//        return campeaoClient.findById(id);
-//    }
+    public Campeao findById(Long id) {
+        return campeaoClient.findById(id);
+    }
 }
