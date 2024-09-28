@@ -1,0 +1,40 @@
+server:
+  port: 9999
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: fechadinho-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: rota
+            uri: lb://RESOURCE-SERVICE
+            predicates:
+              - Path=/rota/**
+          - id: campeao
+            uri: lb://RESOURCE-SERVICE
+            predicates:
+              - Path=/campeao/**
+          - id: conhecido
+            uri: lb://JOGADOR-SERVICE
+            predicates:
+              - Path=/conhecido/**
+          - id: convidado
+            uri: lb://JOGADOR-SERVICE
+            predicates:
+              - Path=/convidado/**
+          - id: partida
+            uri: lb://PARTIDA-SERVICE
+            predicates:
+              - Path=/partida/**
+            filters:
+              - StripPrefix=1
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
