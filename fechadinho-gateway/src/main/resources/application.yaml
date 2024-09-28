@@ -29,6 +29,10 @@ spring:
             uri: lb://JOGADOR-SERVICE
             predicates:
               - Path=/convidado/**
+          - id: jogador
+            uri: lb://JOGADOR-SERVICE
+            predicates:
+              - Path=/jogador/**
           - id: partida
             uri: lb://PARTIDA-SERVICE
             predicates:

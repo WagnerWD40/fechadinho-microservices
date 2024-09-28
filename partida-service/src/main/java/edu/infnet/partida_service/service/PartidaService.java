@@ -38,4 +38,8 @@ public class PartidaService implements ResourceService<Partida> {
     public Partida update(Partida item) {
         return partidaRepository.save(item);
     }
+
+    public void createRelatorio(Long id) {
+
+    }
 }

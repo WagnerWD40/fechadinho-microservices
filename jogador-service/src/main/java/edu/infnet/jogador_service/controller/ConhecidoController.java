@@ -2,6 +2,7 @@ package edu.infnet.jogador_service.controller;
 
 import edu.infnet.jogador_service.dto.ConhecidoCompletoDTO;
 import edu.infnet.jogador_service.model.Conhecido;
+import edu.infnet.jogador_service.repository.JogadorRepository;
 import edu.infnet.jogador_service.service.ConhecidoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ConhecidoController {
 
     private final ConhecidoService conhecidoService;
+    private final JogadorRepository jogadorRepository;
 
     @GetMapping
     public ResponseEntity<List<Conhecido>> getAll() {
@@ -25,6 +27,7 @@ public class ConhecidoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Conhecido> getOne(@PathVariable Long id) {
+        jogadorRepository.findById(id).ifPresent(System.out::println);
         return ResponseEntity.of(conhecidoService.findById(id));
     }
 
