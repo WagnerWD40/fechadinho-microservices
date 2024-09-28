@@ -5,6 +5,7 @@ import edu.infnet.jogador_service.dto.ConvidadoCompletoDTO;
 import edu.infnet.jogador_service.model.Convidado;
 import edu.infnet.jogador_service.service.ConvidadoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/convidado")
 @RequiredArgsConstructor
+@Slf4j
 public class ConvidadoController {
 
     public final ConvidadoService convidadoService;
@@ -29,6 +31,7 @@ public class ConvidadoController {
 
     @GetMapping("/{id}/completo")
     public ResponseEntity<ConvidadoCompletoDTO> getCompleto(@PathVariable Long id) {
+        log.info("Getting Convidado Completo ID: {}", id);
         return ResponseEntity.of(convidadoService.findCompleto(id));
     }
 

@@ -3,6 +3,7 @@ package edu.infnet.resource_service.controller;
 import edu.infnet.resource_service.model.Rota;
 import edu.infnet.resource_service.service.RotaService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/rota")
 @RequiredArgsConstructor
+@Slf4j
 public class RotaController {
 
     private final RotaService rotaService;
@@ -23,6 +25,7 @@ public class RotaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id) {
+        log.info("Getting Rota ID: {}", id);
         return ResponseEntity.of(rotaService.findById(id));
     }
 
