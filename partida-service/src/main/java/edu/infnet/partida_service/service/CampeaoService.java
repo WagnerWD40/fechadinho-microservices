@@ -31,7 +31,7 @@ public class CampeaoService {
         return campeao;
     }
 
-    public Campeao getFromCache(Long id) {
+    public Campeao getFromCache(Long id, Exception e) {
         return CACHE.getOrDefault(id, null);
     }
 }

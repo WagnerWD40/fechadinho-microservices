@@ -9,6 +9,11 @@ spring:
 
   config:
     import: configserver:http://localhost:8888
+  rabbitmq:
+    password: guest
+    username: guest
+    port: 5672
+    host: localhost
 
 eureka:
   instance:

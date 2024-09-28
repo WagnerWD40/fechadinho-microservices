@@ -31,7 +31,7 @@ public class RotaService {
         return rota;
     }
 
-    private Rota getFromCache(Long id) {
+    private Rota getFromCache(Long id, Exception e) {
         return CACHE.getOrDefault(id, null);
     }
 }

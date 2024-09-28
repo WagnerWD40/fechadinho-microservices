@@ -1,9 +1,11 @@
 package edu.infnet.partida_service.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.infnet.partida_service.dto.PartidaCompletaDTO;
 import edu.infnet.partida_service.model.Partida;
 import edu.infnet.partida_service.service.PartidaCompletaService;
 import edu.infnet.partida_service.service.PartidaService;
+import edu.infnet.partida_service.service.RelatorioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ public class PartidaController {
 
     private final PartidaService partidaService;
     private final PartidaCompletaService partidaCompletaService;
+    private final RelatorioService relatorioService;
 
     @GetMapping
     public ResponseEntity<List<Partida>> getAll() {
@@ -35,12 +38,11 @@ public class PartidaController {
     }
 
     @GetMapping("/{id}/relatorio")
-    public ResponseEntity<String> getRelatorio(@PathVariable Long id) {
-        Optional<Partida> partida = partidaService.findById(id);
+    public ResponseEntity<String> getRelatorio(@PathVariable Long id) throws JsonProcessingException {
+        relatorioService.emitir(id);
 
         return ResponseEntity.ok().build();
     }
-
 
     @PostMapping
     public ResponseEntity<Partida> create(@RequestBody Partida partida) {

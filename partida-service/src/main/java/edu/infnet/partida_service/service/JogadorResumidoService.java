@@ -29,7 +29,7 @@ public class JogadorResumidoService {
         return jogadorResumido;
     }
 
-    public JogadorResumido getFromCache(Long id) {
+    public JogadorResumido getFromCache(Long id, Exception e) {
         return CACHE.getOrDefault(id, null);
     }
 }
