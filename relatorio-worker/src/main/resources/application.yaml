@@ -1,0 +1,7 @@
+server:
+  port: 9990
+
+spring:
+  application:
+    name: relatorio-worker
+

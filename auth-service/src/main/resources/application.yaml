@@ -9,3 +9,13 @@ spring:
 
   config:
     import: configserver:http://localhost:8888
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance-id:${server.port}}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

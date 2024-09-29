@@ -6,39 +6,70 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+jwt:
+  secret: super-secret
+
 spring:
   application:
     name: fechadinho-gateway
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: rota
-            uri: lb://RESOURCE-SERVICE
-            predicates:
-              - Path=/rota/**
-          - id: campeao
-            uri: lb://RESOURCE-SERVICE
-            predicates:
-              - Path=/campeao/**
-          - id: conhecido
-            uri: lb://JOGADOR-SERVICE
-            predicates:
-              - Path=/conhecido/**
-          - id: convidado
-            uri: lb://JOGADOR-SERVICE
-            predicates:
-              - Path=/convidado/**
-          - id: jogador
-            uri: lb://JOGADOR-SERVICE
-            predicates:
-              - Path=/jogador/**
-          - id: partida
-            uri: lb://PARTIDA-SERVICE
-            predicates:
-              - Path=/partida/**
-            filters:
-              - StripPrefix=1
+      routes:
+        - id: auth
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: rota
+          uri: lb://RESOURCE-SERVICE
+          predicates:
+            - Path=/rota/**
+          filters:
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
+        - id: campeao
+          uri: lb://RESOURCE-SERVICE
+          predicates:
+            - Path=/campeao/**
+          filters:
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
+        - id: conhecido
+          uri: lb://JOGADOR-SERVICE
+          predicates:
+            - Path=/conhecido/**
+          filters:
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
+        - id: convidado
+          uri: lb://JOGADOR-SERVICE
+          predicates:
+            - Path=/convidado/**
+          filters:
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
+        - id: jogador
+          uri: lb://JOGADOR-SERVICE
+          predicates:
+            - Path=/jogador/**
+          filters:
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
+        - id: partida
+          uri: lb://PARTIDA-SERVICE
+          predicates:
+            - Path=/partida/**
+          filters:
+            - StripPrefix=1
+            - name: UserAuthentication
+              args:
+                headerName: Authorization
 logging:
   level:
     org.springframework.cloud.gateway: TRACE

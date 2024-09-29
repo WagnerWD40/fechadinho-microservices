@@ -90,6 +90,12 @@
 			<artifactId>jackson-module-parameter-names</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
 		<!--	Java 8 Date/time	-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>

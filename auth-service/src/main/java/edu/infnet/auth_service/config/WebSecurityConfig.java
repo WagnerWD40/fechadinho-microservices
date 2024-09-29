@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                             .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/register").permitAll()
 //                            .requestMatchers(HttpMethod.GET, "/user/").hasRole("ADMIN")
                             .anyRequest().authenticated())
                 .build();
