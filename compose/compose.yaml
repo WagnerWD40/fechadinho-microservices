@@ -1,0 +1,114 @@
+services:
+  mysql:
+    container_name: fechadinho-mysql
+    image: mysql:8.1.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'user'
+      MYSQL_ROOT_PASSWORD: 'root'
+
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - fechadinho_network
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./conf/rabbitmq.conf:/etc/rabbitmq/rabbtmq.conf:ro
+      - ./conf/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - fechadinho_network
+
+  service-discovery:
+    container_name: service-discovery
+    image: fechadinho/service-discovery:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - fechadinho_network
+
+  config-server:
+    container_name: config-server
+    image: fechadinho/config-server:latest
+    environment:
+      - GIT_USERNAME=WagnerWD40
+      - GIT_TOKEN=???
+    depends_on:
+      - service-discovery
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/acuator/health"]
+      interval: 30s
+      timeout: 2s
+      retries: 3
+    networks:
+      - fechadinho_network
+
+  gateway:
+    container_name: fechadinho-gateway
+    ports:
+      - "9999:9999"
+    image: fechadinho/gateway:latest
+    depends_on:
+      config-server:
+        condition: service_healthy
+    networks:
+      - fechadinho_network
+
+  auth-service:
+    container_name: auth-service
+    image: fechadinho/auth-service:latest
+    depends_on:
+      - mysql
+      - config-server
+    networks:
+      - fechadinho_network
+
+  resource-service:
+    container_name: resource-servie
+    image: fechadinho/resource-service:latest
+    depends_on:
+      config-server:
+        condition: service_healthy
+    networks:
+      - fechadinho_network
+
+  jogador-service:
+    container_name: jogador-service
+    image: fechadinho/jogador-service:latest
+    depends_on:
+      config-server:
+        condition: service_healthy
+    networks:
+      - fechadinho_network
+
+  partida-service:
+    container_name: partida-service
+    image: fechadinho/partida-service:latest
+    depends_on:
+      - rabbitmq
+      - config-server
+    networks:
+      - fechadinho_network
+
+  relatorio-worker:
+    container_name: relatorio-worker
+    image: fechadinho/relatorio-worker:latest
+    depends_on:
+      - rabbitmq
+    networks:
+      - fechadinho_network
+
+networks:
+  fechadinho_network:
+    driver: bridge

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: resource-service
+  config:
+    import: configserver:http://config-server:8888
+  main:
+    allow-bean-definition-overriding: true
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance-id:${server.port}}
+  client:
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka

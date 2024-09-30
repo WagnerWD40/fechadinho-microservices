@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: jogador-service
+  main:
+    allow-bean-definition-overriding: true
+
+  config:
+    import: configserver:http://config-server:8888
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance-id:${server.port}}
+  client:
+    service-url:
+      defaultZone: http://service-discoery:8761/eureka
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      resourceService:
+        register-health-indicator: true
+        minimum-number-of-calls: 1
+        sliding-window-size: 3
+        wait-duration-in-open-state:
+          seconds: 200
+
