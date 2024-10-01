@@ -1,3 +1,6 @@
+volumes:
+  mysql:
+
 services:
   mysql:
     container_name: fechadinho-mysql
@@ -25,7 +28,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - ./conf/rabbitmq.conf:/etc/rabbitmq/rabbtmq.conf:ro
+      - ./conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./conf/definitions.json:/etc/rabbitmq/definitions.json:ro
     networks:
       - fechadinho_network
@@ -43,7 +46,7 @@ services:
     image: fechadinho/config-server:latest
     environment:
       - GIT_USERNAME=WagnerWD40
-      - GIT_TOKEN=???
+      - GIT_TOKEN=${GIT_TOKEN}
     depends_on:
       - service-discovery
     healthcheck:
@@ -69,13 +72,15 @@ services:
     container_name: auth-service
     image: fechadinho/auth-service:latest
     depends_on:
-      - mysql
-      - config-server
+      config-server:
+        condition: service_healthy
+      mysql:
+        condition: service_started
     networks:
       - fechadinho_network
 
   resource-service:
-    container_name: resource-servie
+    container_name: resource-service
     image: fechadinho/resource-service:latest
     depends_on:
       config-server:
@@ -96,8 +101,10 @@ services:
     container_name: partida-service
     image: fechadinho/partida-service:latest
     depends_on:
-      - rabbitmq
-      - config-server
+      config-server:
+          condition: service_healthy
+      rabbitmq:
+        condition: service_started
     networks:
       - fechadinho_network
 

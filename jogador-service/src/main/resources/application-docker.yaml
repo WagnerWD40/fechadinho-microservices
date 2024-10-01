@@ -15,7 +15,7 @@ eureka:
     instance-id: ${spring.application.name}:${spring.application.instance-id:${server.port}}
   client:
     service-url:
-      defaultZone: http://service-discoery:8761/eureka
+      defaultZone: http://service-discovery:8761/eureka
 
 resilience4j:
   circuitbreaker:
