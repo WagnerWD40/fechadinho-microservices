@@ -72,3 +72,5 @@ spring:
 logging:
   level:
     org.springframework.cloud.gateway: TRACE
+    ROOT: INFO
+    org.springframework.cloud.config: DEBUG

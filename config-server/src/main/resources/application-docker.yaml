@@ -13,6 +13,11 @@ spring:
             - "config"
           username: ${GIT_USERNAME}
           password: ${GIT_TOKEN}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka
+
 logging:
   level:
     ROOT: INFO

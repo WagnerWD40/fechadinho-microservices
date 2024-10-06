@@ -8,7 +8,7 @@ spring:
     allow-bean-definition-overriding: true
 
   config:
-    import: configserver:http://localhost:8888
+    import: configserver:http://config-server:8888
   jpa:
     hibernate:
       ddl-auto: create-drop

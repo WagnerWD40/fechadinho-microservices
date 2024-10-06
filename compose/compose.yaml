@@ -3,7 +3,7 @@ volumes:
 
 services:
   mysql:
-    container_name: fechadinho-mysql
+    container_name: mysql
     image: mysql:8.1.0
     restart: always
     environment:
@@ -47,10 +47,13 @@ services:
     environment:
       - GIT_USERNAME=WagnerWD40
       - GIT_TOKEN=${GIT_TOKEN}
+    ports:
+      - "8888:8888"
     depends_on:
-      - service-discovery
+      service-discovery:
+        condition: service_started
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8888/acuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
       interval: 30s
       timeout: 2s
       retries: 3
@@ -58,7 +61,7 @@ services:
       - fechadinho_network
 
   gateway:
-    container_name: fechadinho-gateway
+    container_name: gateway
     ports:
       - "9999:9999"
     image: fechadinho/gateway:latest
@@ -78,7 +81,7 @@ services:
         condition: service_started
     networks:
       - fechadinho_network
-
+#
   resource-service:
     container_name: resource-service
     image: fechadinho/resource-service:latest
